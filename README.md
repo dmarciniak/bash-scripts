@@ -1,6 +1,8 @@
 # bash-scripts
 Useful bash scripts
 
+Testing on Ubuntu 18.04
+
 ## Installation
 ```
 git clone https://github.com/dmarciniak/bash-scripts/
