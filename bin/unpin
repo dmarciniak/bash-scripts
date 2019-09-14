@@ -3,7 +3,7 @@
 # checking if first argument is "--help"
 if [ "$1" = "--help" ]; then 
 	echo "Script remove alias for cd command for current location or for alias name given in first parameter"
-	echo "Use \`pin\` or \`pin <alias_name>\`"
+	echo "Use \`unpin\` or \`unpin <alias_name>\`"
 	exit 0
 fi
 
