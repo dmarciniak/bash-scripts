@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# checking if is define first argument
+if [ -z "$1" ] || [ "$1" = "--help" ]; then 
+	echo "Script create alias for cd command to current location"
+	echo "Use \`pin <alias_name>\`"
+	exit 0
+fi
+
+# checing if current localization is already pinned
+while IFS= read -r line
+do
+	regex="^alias (.*)='cd \"$(pwd)\"'$"
+	if [[ $line =~ $regex ]]; then
+		echo "This location is already pinned to name: \"${BASH_REMATCH[1]}\""
+		echo "Use \`unpin\` to unpinned it" 
+		exit 1
+	fi
+done < <(cat ~/.bashrc)
+	
+# checking if that alias already exist
+while IFS= read -r line
+do
+	regex="^alias $1='cd \"(.*)\"'$"
+	if [[ $line =~ $regex ]]; then
+		echo "Pinned name: \"$1\" already exists for location: \"${BASH_REMATCH[1]}\"" 
+		echo "Use another name or unpinned old location"
+		exit 2
+	fi
+done < <(cat ~/.bashrc)
+
+# added alias
+echo "alias $1='cd \"$(pwd)\"'" >> ~/.bashrc
+
+# reload bash
+exec bash

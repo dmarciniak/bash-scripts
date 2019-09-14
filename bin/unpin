@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# checking if first argument is "--help"
+if [ "$1" = "--help" ]; then 
+	echo "Script remove alias for cd command for current location or for alias name given in first parameter"
+	echo "Use \`pin\` or \`pin <alias_name>\`"
+	exit 0
+fi
+
+# if isn't define first arg then unpin current location
+if [ -z "$1" ]; then
+	aliasExist="$(cat ~/.bashrc | grep "^alias .*='cd \"$(pwd)\"'$")"
+	if [ -z "$aliasExist" ]; then
+		echo "This location isn't pinned"
+		exit 1
+	else
+		sed -i "/^alias .*.cd .*$(pwd | tr / .)\"'$/d" ~/.bashrc
+	fi
+
+# if is define first arg then unpin that alias
+else
+	aliasExist="$(cat ~/.bashrc | grep "^alias $1='cd \".*\"'$")"
+	if [ -z "$aliasExist" ]; then
+		echo "None of the location are pinned to name $1"
+		exit 2
+	else
+		sed -i "/^alias $1='cd /d" ~/.bashrc
+	fi
+fi
+
+#reload bash
+exec bash
